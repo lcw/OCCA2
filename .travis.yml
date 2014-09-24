@@ -1,0 +1,14 @@
+language: cpp
+compiler:
+  - gcc
+env:
+  - OMP_NUM_THREADS=4 FC=gfortran OCCA_PTHREADS_ENABLED=1 OCCA_OPENMP_ENABLED=1 OCCA_OPENCL_ENABLED=1 OCCA_CUDA_ENABLED=0 OCCA_COI_ENABLED=0 OCCA_OCCA_FORTRAN_ENABLED=1
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq fglrx=2:8.960-0ubuntu1 opencl-headers gfortran
+script:
+  - make
+  - cd examples/addVectors && make
+  - LD_LIBRARY_PATH=../../lib:$LD_LIBRARY_PATH ./main
+  - LD_LIBRARY_PATH=../../lib:$LD_LIBRARY_PATH ./main_c
+  - LD_LIBRARY_PATH=../../lib:$LD_LIBRARY_PATH ./main_f90
